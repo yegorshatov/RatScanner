@@ -49,6 +49,16 @@ internal class SettingsVM : INotifyPropertyChanged {
 
 	public RatConfig.TarkovTrackerBackend TarkovTrackerBackend { get; set; }
 
+	// Market Settings
+	public RatConfig.Market.ProviderKind MarketProvider { get; set; }
+
+	public string TarkovMarketApiKey { get; set; }
+
+	public bool ShowLastPrice { get; set; }
+	public bool ShowAvg24h { get; set; }
+	public bool ShowAvg7d { get; set; }
+	public bool ShowMarketTrends { get; set; }
+
 	// Interactable Overlay
 	public bool EnableIneractableOverlay { get; set; }
 	public bool BlurBehindSearch { get; set; }
@@ -100,6 +110,13 @@ internal class SettingsVM : INotifyPropertyChanged {
 		ShowTarkovTrackerTeam = RatConfig.Tracking.TarkovTracker.ShowTeam;
 		TarkovTrackerBackend = RatConfig.Tracking.TarkovTracker.Backend;
 
+		MarketProvider = RatConfig.Market.Provider;
+		TarkovMarketApiKey = RatConfig.Market.TarkovMarket.ApiKey;
+		ShowLastPrice = RatConfig.Market.TarkovMarket.ShowLastPrice;
+		ShowAvg24h = RatConfig.Market.TarkovMarket.ShowAvg24h;
+		ShowAvg7d = RatConfig.Market.TarkovMarket.ShowAvg7d;
+		ShowMarketTrends = RatConfig.Market.TarkovMarket.ShowTrends;
+
 		EnableIneractableOverlay = RatConfig.Overlay.Search.Enable;
 		BlurBehindSearch = RatConfig.Overlay.Search.BlurBehind;
 		InteractableOverlayHotkey = RatConfig.Overlay.Search.Hotkey;
@@ -111,6 +128,7 @@ internal class SettingsVM : INotifyPropertyChanged {
 		bool updateMarketDB = NameScanLanguage != (int)RatConfig.NameScan.Language;
 		bool updateTarkovTrackerToken = TarkovTrackerToken != RatConfig.Tracking.TarkovTracker.Token;
 		bool updateTarkovTrackerBackend = TarkovTrackerBackend != RatConfig.Tracking.TarkovTracker.Backend;
+		bool updateTarkovMarketApiKey = TarkovMarketApiKey != RatConfig.Market.TarkovMarket.ApiKey;
 		bool updateResolution = ScreenWidth != RatConfig.ScreenWidth || ScreenHeight != RatConfig.ScreenHeight;
 		bool updateLanguage = RatConfig.NameScan.Language != (Language)NameScanLanguage;
 		bool updateUiLanguage = RatConfig.UserInterface.Language != UiLanguage;
@@ -146,6 +164,13 @@ internal class SettingsVM : INotifyPropertyChanged {
 		RatConfig.Tracking.TarkovTracker.ShowTeam = ShowTarkovTrackerTeam;
 		RatConfig.Tracking.TarkovTracker.Backend = TarkovTrackerBackend;
 
+		RatConfig.Market.Provider = MarketProvider;
+		RatConfig.Market.TarkovMarket.ApiKey = TarkovMarketApiKey.Trim();
+		RatConfig.Market.TarkovMarket.ShowLastPrice = ShowLastPrice;
+		RatConfig.Market.TarkovMarket.ShowAvg24h = ShowAvg24h;
+		RatConfig.Market.TarkovMarket.ShowAvg7d = ShowAvg7d;
+		RatConfig.Market.TarkovMarket.ShowTrends = ShowMarketTrends;
+
 		RatConfig.Overlay.Search.Enable = EnableIneractableOverlay;
 		RatConfig.Overlay.Search.BlurBehind = BlurBehindSearch;
 		RatConfig.Overlay.Search.Hotkey = InteractableOverlayHotkey;
@@ -163,6 +188,7 @@ internal class SettingsVM : INotifyPropertyChanged {
 		PageSwitcher.Instance.ResetWindowSize();
 		await TarkovDevAPI.InitializeCache();
 		if (updateTarkovTrackerToken || updateTarkovTrackerBackend) UpdateTarkovTrackerToken();
+		if (updateTarkovMarketApiKey) TarkovMarketAPI.ResetBadKey();
 		if (updateUiLanguage) _localizationService.SetLanguage(UiLanguage);
 		if (updateResolution || updateLanguage) RatScannerMain.Instance.SetupRatEye();
 

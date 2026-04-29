@@ -121,6 +121,24 @@ internal static class RatConfig {
 		TarkovTrackerORG,
 	}
 
+	// Market pricing options
+	internal static class Market {
+		public enum ProviderKind { TarkovDev, TarkovMarket }
+		internal static ProviderKind Provider = ProviderKind.TarkovDev;
+
+		internal static class TarkovMarket {
+			internal const string DefaultEndpoint = "https://api.tarkov-market.app/api/v1";
+			internal static string Endpoint = DefaultEndpoint;
+			internal static string ApiKey = "";
+			internal static bool Enable => ApiKey.Length > 0;
+			internal static int CacheTtlSeconds = 600;
+			internal static bool ShowLastPrice = true;
+			internal static bool ShowAvg24h = true;
+			internal static bool ShowAvg7d = true;
+			internal static bool ShowTrends = true;
+		}
+	}
+
 	// Overlay options
 	internal static class Overlay {
 		internal static class Search {
@@ -229,6 +247,16 @@ internal static class RatConfig {
 		Tracking.TarkovTracker.Token = config.ReadSecureString(nameof(Tracking.TarkovTracker.Token), Tracking.TarkovTracker.Token);
 		Tracking.TarkovTracker.ShowTeam = config.ReadBool(nameof(Tracking.TarkovTracker.ShowTeam), Tracking.TarkovTracker.ShowTeam);
 
+		config.Section = nameof(Market);
+		Market.Provider = (Market.ProviderKind)config.ReadInt(nameof(Market.Provider), (int)Market.Provider);
+
+		config.Section = nameof(Market.TarkovMarket);
+		Market.TarkovMarket.ApiKey = config.ReadSecureString(nameof(Market.TarkovMarket.ApiKey), Market.TarkovMarket.ApiKey);
+		Market.TarkovMarket.ShowLastPrice = config.ReadBool(nameof(Market.TarkovMarket.ShowLastPrice), Market.TarkovMarket.ShowLastPrice);
+		Market.TarkovMarket.ShowAvg24h = config.ReadBool(nameof(Market.TarkovMarket.ShowAvg24h), Market.TarkovMarket.ShowAvg24h);
+		Market.TarkovMarket.ShowAvg7d = config.ReadBool(nameof(Market.TarkovMarket.ShowAvg7d), Market.TarkovMarket.ShowAvg7d);
+		Market.TarkovMarket.ShowTrends = config.ReadBool(nameof(Market.TarkovMarket.ShowTrends), Market.TarkovMarket.ShowTrends);
+
 		config.Section = nameof(Overlay);
 
 		config.Section = nameof(Overlay.Search);
@@ -297,6 +325,16 @@ internal static class RatConfig {
 		config.WriteInt(nameof(Tracking.TarkovTracker.Backend), (int)Tracking.TarkovTracker.Backend);
 		config.WriteSecureString(nameof(Tracking.TarkovTracker.Token), Tracking.TarkovTracker.Token);
 		config.WriteBool(nameof(Tracking.TarkovTracker.ShowTeam), Tracking.TarkovTracker.ShowTeam);
+
+		config.Section = nameof(Market);
+		config.WriteInt(nameof(Market.Provider), (int)Market.Provider);
+
+		config.Section = nameof(Market.TarkovMarket);
+		config.WriteSecureString(nameof(Market.TarkovMarket.ApiKey), Market.TarkovMarket.ApiKey);
+		config.WriteBool(nameof(Market.TarkovMarket.ShowLastPrice), Market.TarkovMarket.ShowLastPrice);
+		config.WriteBool(nameof(Market.TarkovMarket.ShowAvg24h), Market.TarkovMarket.ShowAvg24h);
+		config.WriteBool(nameof(Market.TarkovMarket.ShowAvg7d), Market.TarkovMarket.ShowAvg7d);
+		config.WriteBool(nameof(Market.TarkovMarket.ShowTrends), Market.TarkovMarket.ShowTrends);
 
 		config.Section = nameof(Overlay);
 

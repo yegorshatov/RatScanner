@@ -59,5 +59,18 @@
   "FavoriteItem": "Favorite item",
   "AddItem": "Add item",
   "RemoveItem": "Remove item",
-  "NoneLabel": "None"
+  "NoneLabel": "None",
+  "MarketNav": "Market",
+  "MarketSettingsTitle": "Market Settings",
+  "MarketProviderLabel": "Price Provider",
+  "MarketApiKey": "tarkov-market API Key",
+  "MarketTestConnection": "Test Connection",
+  "MarketTestOk": "Connected",
+  "MarketTestFail": "Connection failed",
+  "ShowLastPrice": "Show last price",
+  "ShowAvg24h": "Show 24h avg. price",
+  "ShowAvg7d": "Show 7d avg. price",
+  "ShowMarketTrends": "Show price trends (24h %)",
+  "Avg7dPrice": "7d Avg. Price",
+  "LastPrice": "Last Price"
 }

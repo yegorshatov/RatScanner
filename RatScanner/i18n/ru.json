@@ -59,5 +59,18 @@
   "FavoriteItem": "Избранный предмет",
   "AddItem": "Добавить предмет",
   "RemoveItem": "Удалить предмет",
-  "NoneLabel": "Нет"
+  "NoneLabel": "Нет",
+  "MarketNav": "Рынок",
+  "MarketSettingsTitle": "Настройки рынка",
+  "MarketProviderLabel": "Источник цен",
+  "MarketApiKey": "API ключ tarkov-market",
+  "MarketTestConnection": "Проверить подключение",
+  "MarketTestOk": "Подключено",
+  "MarketTestFail": "Ошибка подключения",
+  "ShowLastPrice": "Показывать последнюю цену",
+  "ShowAvg24h": "Показывать среднее за 24ч",
+  "ShowAvg7d": "Показывать среднее за 7д",
+  "ShowMarketTrends": "Показывать тренды цены (24ч %)",
+  "Avg7dPrice": "Сред. цена за 7д",
+  "LastPrice": "Последняя цена"
 }

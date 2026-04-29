@@ -42,7 +42,26 @@ internal class MenuVM : INotifyPropertyChanged {
 		}
 	}
 
-	public int PricePerSlot => LastItem.GetAvg24hMarketPricePerSlot();
+	public MarketSnapshot MarketSnapshot => PriceProvider.GetSnapshot(LastItem);
+
+	public int LastPrice => MarketSnapshot.Price;
+	public bool ShowLastPrice => MarketSnapshot.FromTarkovMarket && MarketSnapshot.Price > 0 && RatConfig.Market.TarkovMarket.ShowLastPrice;
+	public int Avg24hPrice { get { var s = MarketSnapshot; return s.Avg24h > 0 ? s.Avg24h : s.Price; } }
+	public bool ShowAvg24h => MarketSnapshot.FromTarkovMarket && RatConfig.Market.TarkovMarket.ShowAvg24h;
+	public int Avg7dPrice => MarketSnapshot.Avg7d;
+	public bool ShowAvg7d => MarketSnapshot.FromTarkovMarket && MarketSnapshot.Avg7d > 0 && RatConfig.Market.TarkovMarket.ShowAvg7d;
+	public string Diff24hText { get { var s = MarketSnapshot; return s.FromTarkovMarket && RatConfig.Market.TarkovMarket.ShowTrends && s.Diff24h != 0 ? $"{(s.Diff24h > 0 ? "↑" : "↓")}{Math.Abs(s.Diff24h):F1}%" : ""; } }
+	public bool Diff24hPositive => MarketSnapshot.Diff24h >= 0;
+	public bool ShowDiff24h => MarketSnapshot.FromTarkovMarket && RatConfig.Market.TarkovMarket.ShowTrends && MarketSnapshot.Diff24h != 0;
+
+	public int PricePerSlot {
+		get {
+			var snap = MarketSnapshot;
+			int price = snap.Avg24h > 0 ? snap.Avg24h : snap.Price;
+			int size = LastItem.Width * LastItem.Height;
+			return size > 0 ? price / size : 0;
+		}
+	}
 
 	public ItemPrice? BestTraderOffer => LastItem.GetBestTraderOffer();
 	public TraderOffer? BestTraderOfferVendor => LastItem.GetBestTraderOfferVendor();

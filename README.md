@@ -128,6 +128,13 @@ Please read `CONTRIBUTING.md` before contributing.
 
 <br/>
 
+## Data sources
+
+- Item structure, tasks, and hideout data: [tarkov.dev][tarkov-dev]
+- Optional market prices (when enabled in Settings → Market): [tarkov-market.com](https://tarkov-market.com) — requires a Pro subscription and API key
+
+<br/>
+
 ## Support the project
 
 This will help to finance the backend server as well as the [API][tarkov-dev] which provides the backend with data.

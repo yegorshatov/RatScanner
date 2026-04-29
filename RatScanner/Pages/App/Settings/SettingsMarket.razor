@@ -1,0 +1,90 @@
+@page "/app/settings/market"
+@using static RatScanner.RatConfig
+@inject SettingsVM SettingsVM
+@inject LocalizationService Localizer
+@implements IDisposable
+<div>
+    <MudGrid Class="pa-0 ma-0" Spacing="0" Style="height: 100%;">
+        <MudItem xs="12">
+            <div class="d-flex align-center justify-center mx-2 mb-1">
+                <MudText Typo="Typo.subtitle1" Color="Color.Inherit">@Localizer["MarketSettingsTitle"]</MudText>
+            </div>
+        </MudItem>
+        <MudItem xs="12">
+            <MudPaper Class="align-center justify-center pa-2 mx-2 mb-2" Elevation="2">
+                <MudGrid Spacing="1">
+                    <MudItem xs="12">
+                        <MudSelect @bind-Value="SettingsVM.MarketProvider" T="RatConfig.Market.ProviderKind" Label="@Localizer["MarketProviderLabel"]" Variant="Variant.Outlined" Margin="Margin.Dense">
+                            <MudSelectItem T="RatConfig.Market.ProviderKind" Value="@RatConfig.Market.ProviderKind.TarkovDev">tarkov.dev</MudSelectItem>
+                            <MudSelectItem T="RatConfig.Market.ProviderKind" Value="@RatConfig.Market.ProviderKind.TarkovMarket">tarkov-market.com</MudSelectItem>
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudTextField @bind-Value="SettingsVM.TarkovMarketApiKey" Label="@Localizer["MarketApiKey"]" InputType="@PasswordInput" Variant="Variant.Outlined" Margin="Margin.Dense" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ApiKeyShowClick"></MudTextField>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="TestConnection" Disabled="@_testing">@Localizer["MarketTestConnection"]</MudButton>
+                        @if (_testResult.HasValue) {
+                            <MudText Typo="Typo.caption" Style="@($"margin-left:8px; color:{(_testResult.Value ? "#4caf50" : "#f44336")}")">
+                                @(_testResult.Value ? Localizer["MarketTestOk"] : Localizer["MarketTestFail"])
+                            </MudText>
+                        }
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudCheckBox @bind-Checked="SettingsVM.ShowLastPrice" Label="@Localizer["ShowLastPrice"]" Size="Size.Small" Class="pa-0 ma-0"></MudCheckBox>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudCheckBox @bind-Checked="SettingsVM.ShowAvg24h" Label="@Localizer["ShowAvg24h"]" Size="Size.Small" Class="pa-0 ma-0"></MudCheckBox>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudCheckBox @bind-Checked="SettingsVM.ShowAvg7d" Label="@Localizer["ShowAvg7d"]" Size="Size.Small" Class="pa-0 ma-0"></MudCheckBox>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudCheckBox @bind-Checked="SettingsVM.ShowMarketTrends" Label="@Localizer["ShowMarketTrends"]" Size="Size.Small" Class="pa-0 ma-0"></MudCheckBox>
+                    </MudItem>
+                </MudGrid>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</div>
+
+@code {
+    protected override void OnInitialized() {
+        SettingsVM.PropertyChanged += PropertyChangeHandler;
+    }
+
+    private async void PropertyChangeHandler(object? sender, EventArgs e) {
+        await InvokeAsync(() => StateHasChanged());
+    }
+
+    public void Dispose() {
+        SettingsVM.PropertyChanged -= PropertyChangeHandler;
+    }
+
+    bool isShow;
+    InputType PasswordInput = InputType.Password;
+    string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+    bool _testing;
+    bool? _testResult;
+
+    void ApiKeyShowClick() {
+        if (isShow) {
+            isShow = false;
+            PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+            PasswordInput = InputType.Password;
+        } else {
+            isShow = true;
+            PasswordInputIcon = Icons.Material.Filled.Visibility;
+            PasswordInput = InputType.Text;
+        }
+    }
+
+    async Task TestConnection() {
+        _testing = true;
+        _testResult = null;
+        StateHasChanged();
+        _testResult = await System.Threading.Tasks.Task.Run(() => TarkovMarketAPI.TestConnection(SettingsVM.TarkovMarketApiKey));
+        _testing = false;
+        StateHasChanged();
+    }
+}

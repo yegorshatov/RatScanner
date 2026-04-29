@@ -38,18 +38,28 @@
                         </div>
 
                         <div style="overflow: hidden;">
-                            @if (item.Avg24HPrice >= item.GetBestTraderOffer()?.PriceRub)
+                            @{
+                                var snap = PriceProvider.GetSnapshot(item);
+                                int fleaPrice = snap.Avg24h > 0 ? snap.Avg24h : snap.Price;
+                                int? traderRub = item.GetBestTraderOffer()?.PriceRub;
+                            }
+                            @if (fleaPrice >= (traderRub ?? 0))
                             {
                                 <div class="stroke">
-                                    @item.Avg24HPrice.ToShortString().AsRubs()
+                                    @fleaPrice.ToShortString().AsRubs()
                                 </div>
                             }
                             else
                             {
                                 <div class="d-flex align-center stroke">
-                                    @item.GetBestTraderOffer()?.PriceRub.ToShortString().AsRubs()
+                                    @traderRub.ToShortString().AsRubs()
                                     <MudAvatar Image="@(item.GetBestTraderOfferVendor()?.Trader?.ImageLink)"
                                                Size="Size.Small" Style="float: right;" Class="ml-1" />
+                                </div>
+                            }
+                            @if (snap.FromTarkovMarket && RatConfig.Market.TarkovMarket.ShowTrends && snap.Diff24h != 0) {
+                                <div class="stroke" style="@($"color:{(snap.Diff24h > 0 ? "#4caf50" : "#f44336")}; font-size: 0.7em;")">
+                                    @(snap.Diff24h > 0 ? "↑" : "↓")@(Math.Abs(snap.Diff24h).ToString("F1"))%
                                 </div>
                             }
 
@@ -75,18 +85,27 @@
 	                                                   left: @(itemScan.GetToolTipPosition().X - VirtualScreenOffset.XOffset)px;
 	                                                   top: @(itemScan.GetToolTipPosition().Y - VirtualScreenOffset.YOffset)px;
 	                                                   background: #121212; padding: 4px;">
-
-                    @if (item.Avg24HPrice >= item.GetBestTraderOffer()?.PriceRub) {
+                    @{
+                        var snapNs = PriceProvider.GetSnapshot(item);
+                        int fleaPriceNs = snapNs.Avg24h > 0 ? snapNs.Avg24h : snapNs.Price;
+                        int? traderRubNs = item.GetBestTraderOffer()?.PriceRub;
+                    }
+                    @if (fleaPriceNs >= (traderRubNs ?? 0)) {
                         <div class="stroke">
-                            @item.Avg24HPrice.ToShortString().AsRubs()
+                            @fleaPriceNs.ToShortString().AsRubs()
                         </div>
                     }
                     else
                     {
                         <div class="d-flex align-center stroke">
-                            @item.GetBestTraderOffer()?.PriceRub.ToShortString().AsRubs()
+                            @traderRubNs.ToShortString().AsRubs()
                             <MudAvatar Image="@(item.GetBestTraderOfferVendor()?.Trader?.ImageLink)"
                                        Size="Size.Small" Style="float: right;" Class="ml-1" />
+                        </div>
+                    }
+                    @if (snapNs.FromTarkovMarket && RatConfig.Market.TarkovMarket.ShowTrends && snapNs.Diff24h != 0) {
+                        <div class="stroke" style="@($"color:{(snapNs.Diff24h > 0 ? "#4caf50" : "#f44336")}; font-size: 0.7em;")">
+                            @(snapNs.Diff24h > 0 ? "↑" : "↓")@(Math.Abs(snapNs.Diff24h).ToString("F1"))%
                         </div>
                     }
 

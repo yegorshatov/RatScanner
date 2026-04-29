@@ -59,5 +59,18 @@
   "FavoriteItem": "Objet favori",
   "AddItem": "Ajouter un objet",
   "RemoveItem": "Supprimer un objet",
-  "NoneLabel": "Aucun"
+  "NoneLabel": "Aucun",
+  "MarketNav": "Marché",
+  "MarketSettingsTitle": "Paramètres du marché",
+  "MarketProviderLabel": "Fournisseur de prix",
+  "MarketApiKey": "Clé API tarkov-market",
+  "MarketTestConnection": "Tester la connexion",
+  "MarketTestOk": "Connecté",
+  "MarketTestFail": "Échec de connexion",
+  "ShowLastPrice": "Afficher le dernier prix",
+  "ShowAvg24h": "Afficher prix moy. 24h",
+  "ShowAvg7d": "Afficher prix moy. 7j",
+  "ShowMarketTrends": "Afficher les tendances de prix (24h %)",
+  "Avg7dPrice": "Prix moy. 7j",
+  "LastPrice": "Dernier prix"
 }

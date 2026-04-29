@@ -59,5 +59,18 @@
   "FavoriteItem": "收藏物品",
   "AddItem": "添加物品",
   "RemoveItem": "移除物品",
-  "NoneLabel": "无"
+  "NoneLabel": "无",
+  "MarketNav": "市场",
+  "MarketSettingsTitle": "市场设置",
+  "MarketProviderLabel": "价格来源",
+  "MarketApiKey": "tarkov-market API 密钥",
+  "MarketTestConnection": "测试连接",
+  "MarketTestOk": "已连接",
+  "MarketTestFail": "连接失败",
+  "ShowLastPrice": "显示最新价格",
+  "ShowAvg24h": "显示24h均价",
+  "ShowAvg7d": "显示7日均价",
+  "ShowMarketTrends": "显示价格趋势 (24h %)",
+  "Avg7dPrice": "7日均价",
+  "LastPrice": "最新价格"
 }
